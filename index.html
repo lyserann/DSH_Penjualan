@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analisis Penjualan </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">📊 Analisa Penjualan PT MY LITTLE BOLU KETAN</span>
+        </div>
+    </nav>
+
+<div class="container">
+        <div class="row">
+            <div class="col-md-7 mb-4">
+                <div class="card p-3">
+                    <h5 class="card-title text-center">Total Pendapatan per Kategori</h5>
+                    <div style="height: 350px;">
+                        <canvas id="barChartKategori"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5 mb-4">
+                <div class="card p-3">
+                    <h5 class="card-title text-center">Metode Pembayaran Terfavorit</h5>
+                    <div style="height: 350px; display: flex; justify-content: center;">
+                        <canvas id="doughnutChartPembayaran"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4 mb-4">
+                <div class="card p-3">
+                    <h5 class="card-title text-center">📈 Tren Omset Bulanan</h5>
+                    <div style="height: 300px;">
+                        <canvas id="lineChartTren"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card p-3">
+                    <h5 class="card-title text-center">🏆 Top 5 Kota Terbesar</h5>
+                    <div style="height: 300px;">
+                        <canvas id="barChartKota"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card p-3">
+                    <h5 class="card-title text-center">👥 Proporsi Member vs Non-Member</h5>
+                    <div style="height: 300px; display: flex; justify-content: center;">
+                        <canvas id="pieChartPelanggan"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4 mb-4">
+                <div class="card p-3">
+                    <h5 class="card-title">➕ Tambah Transaksi Baru</h5>
+                    <form id="formTransaksi">
+                        <div class="mb-2">
+                            <label class="form-label small">Nama Pelanggan</label>
+                            <input type="text" id="nama_pelanggan" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Tipe</label>
+                            <select id="tipe_pelanggan" class="form-select form-select-sm">
+                                <option value="Member">Member</option>
+                                <option value="Non-Member">Non-Member</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Nama Produk</label>
+                            <input type="text" id="nama_produk" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Kategori</label>
+                            <select id="kategori_produk" class="form-select form-select-sm">
+                                <option value="Elektronik">Elektronik</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Kuliner">Kuliner</option>
+                                <option value="Furniture">Furniture</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Harga Satuan</label>
+                            <input type="number" id="harga_satuan" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Jumlah Beli</label>
+                            <input type="number" id="jumlah_beli" class="form-control form-control-sm" value="1" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small">Metode Pembayaran</label>
+                            <select id="metode_pembayaran" class="form-select form-select-sm">
+                                <option value="Transfer Bank">Transfer Bank</option>
+                                <option value="E-Wallet (OVO/Dana)">E-Wallet (OVO/Dana)</option>
+                                <option value="COD">COD</option>
+                                <option value="Kartu Kredit">Kartu Kredit</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small">Kota Lokasi</label>
+                            <select id="kota_pelanggan" class="form-select form-select-sm">
+                                <option value="Sukabumi">Sukabumi</option>
+                                <option value="Bandung">Bandung</option>
+                                <option value="Jakarta">Jakarta</option>
+                                <option value="Bogor">Bogor</option>
+                                <option value="Cianjur">Cianjur</option>
+                                <option value="Medan">Medan</option>
+                                <option value="Surabaya">Surabaya</option>
+                                <option value="Semarang">Semarang</option>
+                                <option value="Makassar">Makassar</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm w-100">Simpan Transaksi</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-8 mb-4">
+                <div class="card p-3">
+                    <h5 class="card-title">📋 10 Transaksi Terbaru</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm align-middle" style="font-size: 13px;">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Pelanggan (Kota)</th>
+                                    <th>Produk</th>
+                                    <th>Total Bayar</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelBodyTransaksi">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadDashboardData() {
+            try {
+                // CHART 1: BAR CHART KATEGORI
+                const resKategori = await fetch('/api/analytics/kategori');
+                const dataKategori = await resKategori.json();
+                const labelsKategori = dataKategori.map(item => item._id);
+                const pendapatanKategori = dataKategori.map(item => item.totalPendapatan);
+
+                const ctxBar = document.getElementById('barChartKategori').getContext('2d');
+                new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: labelsKategori,
+                        datasets: [{
+                            label: 'Pendapatan (Rp)',
+                            data: pendapatanKategori,
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                // CHART 2: DOUGHNUT CHART PEMBAYARAN
+                const resPembayaran = await fetch('/api/analytics/pembayaran');
+                const dataPembayaran = await resPembayaran.json();
+                const labelsPembayaran = dataPembayaran.map(item => item._id);
+                const jumlahPengguna = dataPembayaran.map(item => item.jumlahPengguna);
+
+                const ctxDoughnut = document.getElementById('doughnutChartPembayaran').getContext('2d');
+                new Chart(ctxDoughnut, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labelsPembayaran,
+                        datasets: [{
+                            data: jumlahPengguna,
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                // CHART 3: LINE CHART TREN BULANAN
+                const resTren = await fetch('/api/analytics/tren');
+                const dataTren = await resTren.json();
+                const labelsTren = dataTren.map(item => item._id);
+                const omsetTren = dataTren.map(item => item.totalOmset);
+
+                const ctxLine = document.getElementById('lineChartTren').getContext('2d');
+                new Chart(ctxLine, {
+                    type: 'line',
+                    data: {
+                        labels: labelsTren,
+                        datasets: [{
+                            label: 'Omset Bulanan (Rp)',
+                            data: omsetTren,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            fill: true
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                // CHART 4: HORIZONTAL BAR CHART KOTA
+                const resKota = await fetch('/api/analytics/kota');
+                const dataKota = await resKota.json();
+                const labelsKota = dataKota.map(item => item._id);
+                const penjualanKota = dataKota.map(item => item.totalPenjualan);
+
+                const ctxHorizBar = document.getElementById('barChartKota').getContext('2d');
+                new Chart(ctxHorizBar, {
+                    type: 'bar',
+                    data: {
+                        labels: labelsKota,
+                        datasets: [{
+                            label: 'Total Penjualan (Rp)',
+                            data: penjualanKota,
+                            backgroundColor: 'rgba(153, 102, 255, 0.7)',
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false }
+                });
+
+                // CHART 5: PIE CHART PELANGGAN (GRAFIK BARU)
+                const resPelanggan = await fetch('/api/analytics/pelanggan');
+                const dataPelanggan = await resPelanggan.json();
+                const labelsPelanggan = dataPelanggan.map(item => item._id);
+                const jumlahPelanggan = dataPelanggan.map(item => item.totalTransaksi || item.jumlahPengguna || 1);
+
+                const ctxPie = document.getElementById('pieChartPelanggan').getContext('2d');
+                new Chart(ctxPie, {
+                    type: 'pie',
+                    data: {
+                        labels: labelsPelanggan,
+                        datasets: [{
+                            data: jumlahPelanggan,
+                            backgroundColor: ['#4BC0C0', '#FFCE56']
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+            } catch (error) {
+                console.error("Gagal memuat grafik dashboard:", error);
+            }
+        }
+
+        async function fetchTabelCRUD() {
+            try {
+                const res = await fetch('/api/transaksi');
+                const data = await res.json();
+                const tbody = document.getElementById('tabelBodyTransaksi');
+                tbody.innerHTML = '';
+
+                data.forEach(trx => {
+                    const kotaTampil = trx.lokasi && trx.lokasi.kota ? trx.lokasi.kota : 'N/A';
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${trx.id_transaksi}</strong></td>
+                            <td>${trx.pelanggan.nama} <span class="badge bg-secondary">${trx.pelanggan.tipe}</span> <br><small class="text-muted">📍 ${kotaTampil}</small></td>
+                            <td>${trx.produk.nama_produk} (${trx.produk.jumlah}x)</td>
+                            <td>Rp ${trx.pembayaran.total_bayar.toLocaleString('id-ID')}</td>
+                            <td>
+                                <button class="btn btn-warning btn-xs py-0 px-1 me-1 text-white" onclick="editTransaksi('${trx.id_transaksi}', '${trx.pelanggan.nama}')" style="font-size: 11px;">Edit</button>
+                                <button class="btn btn-danger btn-xs py-0 px-1" onclick="hapusTransaksi('${trx.id_transaksi}')" style="font-size: 11px;">Hapus</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error("Gagal memuat tabel:", err);
+            }
+        }
+
+        // AKSI SIMPAN DATA (CREATE) + MENGIRIM KOTA
+        document.getElementById('formTransaksi').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                nama_pelanggan: document.getElementById('nama_pelanggan').value,
+                tipe_pelanggan: document.getElementById('tipe_pelanggan').value,
+                nama_produk: document.getElementById('nama_produk').value,
+                kategori_produk: document.getElementById('kategori_produk').value,
+                harga_satuan: document.getElementById('harga_satuan').value,
+                jumlah_beli: document.getElementById('jumlah_beli').value,
+                metode_pembayaran: document.getElementById('metode_pembayaran').value,
+                kota: document.getElementById('kota_pelanggan').value // Mengirim data kota
+            };
+
+            const res = await fetch('/api/transaksi', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if(res.ok) {
+                alert('Data Sukses Ditambahkan!');
+                document.getElementById('formTransaksi').reset();
+                window.location.reload(); 
+            }
+        });
+
+        async function editTransaksi(id, namaLama) {
+            const namaBaru = prompt(`Ubah Nama Pelanggan untuk transaksi ${id}:`, namaLama);
+            if (namaBaru !== null && namaBaru.trim() !== "") {
+                const res = await fetch(`/api/transaksi/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama_pelanggan: namaBaru })
+                });
+                if(res.ok) { window.location.reload(); }
+            }
+        }
+
+        async function hapusTransaksi(id) {
+            if(confirm(`Yakin ingin menghapus transaksi ${id}?`)) {
+                const res = await fetch(`/api/transaksi/${id}`, { method: 'DELETE' });
+                if(res.ok) { window.location.reload(); }
+            }
+        }
+
+        window.onload = function() {
+            loadDashboardData();
+            fetchTabelCRUD();
+        };
+    </script>
+</body>
+</html>
